@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.kinomanager.controller.Controller">
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Киноменеджер">
+        <font>
+            <Font name="System Bold" size="24.0" />
+        </font>
+    </Label>
+
+    <!-- Поиск и фильтрация -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label style="-fx-font-weight: bold;" text="Поиск:" />
+        <TextField fx:id="searchField" promptText="Введите название, жанр или тип" HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleSearch" text="Найти" />
+        <Button onAction="#handleShowAll" text="Сброс" />
+    </HBox>
+
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label style="-fx-font-weight: bold;" text="Источник данных:" />
+        <ComboBox fx:id="dataSourceComboBox" prefWidth="150" />
+    </HBox>
+
+    <!-- Основной контент -->
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Таблица фильмов -->
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-weight: bold;" text="Список фильмов и сериалов:" />
+
+            <TableView fx:id="moviesTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="titleColumn" prefWidth="200" text="Название" />
+                    <TableColumn fx:id="typeColumn" prefWidth="80" text="Тип" />
+                    <TableColumn fx:id="yearColumn" prefWidth="60" text="Год" />
+                    <TableColumn fx:id="genreColumn" prefWidth="120" text="Жанр" />
+                    <TableColumn fx:id="ratingColumn" prefWidth="80" text="Рейтинг" />
+                    <TableColumn fx:id="statusColumn" prefWidth="120" text="Статус" />
+                    <TableColumn fx:id="progressColumn" prefWidth="120" text="Прогресс" />
+                    <TableColumn fx:id="descriptionColumn" prefWidth="200" text="Описание" />
+                </columns>
+            </TableView>
+
+            <!-- Статистика -->
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <Label style="-fx-font-weight: bold;" text="Всего: " />
+                <Label fx:id="totalCountLabel" text="0" />
+                <Label style="-fx-font-weight: bold;" text="Фильмы: " />
+                <Label fx:id="moviesCountLabel" text="0" />
+                <Label style="-fx-font-weight: bold;" text="Сериалы: " />
+                <Label fx:id="seriesCountLabel" text="0" />
+                <Label style="-fx-font-weight: bold;" text="Просмотрено: " />
+                <Label fx:id="watchedCountLabel" text="0" />
+            </HBox>
+        </VBox>
+
+        <!-- Форма редактирования -->
+        <VBox prefWidth="350" spacing="15" style="-fx-padding: 15; -fx-background-color: white; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Добавить/Редактировать:" />
+
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="100" />
+                    <ColumnConstraints prefWidth="240" />
+                </columnConstraints>
+
+                <Label text="Название*:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="titleField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Тип*:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <ComboBox fx:id="typeComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Год*:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Жанр:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="genreField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Рейтинг:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <Slider fx:id="ratingSlider" majorTickUnit="2" max="10" min="0" showTickLabels="true" showTickMarks="true" value="5" />
+                    <Label fx:id="ratingLabel" style="-fx-alignment: center;" text="5.0" />
+                </VBox>
+
+                <Label text="Статус:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <ComboBox fx:id="statusComboBox" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                <Label text="Прогресс:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <TextField fx:id="progressField" HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleIncrementProgress" prefHeight="29.0" prefWidth="21.0"  text="+">
+                        <font>
+                            <Font name="Arial" size="12.0" />
+                        </font>
+                    </Button>
+                    <Button onAction="#handleDecrementProgress" prefHeight="29.0" prefWidth="21.0"  text="-" />
+                </HBox>
+
+                <Label text="Всего серий:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                <TextField fx:id="totalEpisodesField" text="1" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                <Label text="Описание:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                <TextArea fx:id="descriptionField" prefHeight="80" promptText="Введите описание фильма/сериала" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+                <Label text="TMDb поиск:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                    <TextField fx:id="tmdbSearchField" promptText="Название или TMDb ID" HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleSearchTmdb" text="Поиск TMDb" wrapText="true" />
+                </HBox>
+
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints prefHeight="100" />
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
+
+            <!-- Кнопки управления -->
+            <VBox spacing="10">
+                <HBox spacing="10">
+                    <Button onAction="#handleAddMovie"  text="Добавить" HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleUpdateMovie"  text="Изменить" HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleDeleteMovie"  text="Удалить" HBox.hgrow="ALWAYS" />
+                </HBox>
+
+                <Label prefHeight="35.0" prefWidth="270.0" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d; -fx-alignment: center;" text="Статус обновляется автоматически при изменении прогресса" wrapText="true" />
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <!-- Панель сортировки и фильтрации -->
+    <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #ecf0f1; -fx-border-radius: 5;">
+        <Label style="-fx-font-weight: bold;" text="Сортировка и фильтрация:" />
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="Сортировка:" />
+            <Button onAction="#handleSortByRating" text="По рейтингу" />
+            <Button onAction="#handleSortByYear" text="По году" />
+            <Label style="-fx-padding: 0 0 0 20;" text="Фильтры:" />
+            <Button onAction="#handleFilterMovies" text="Только фильмы" />
+            <Button onAction="#handleFilterSeries" text="Только сериалы" />
+            <Button onAction="#handleFilterWatched" text="Просмотрено" />
+            <Button onAction="#handleFilterInProgress" text="В процессе" />
+            <Button onAction="#handleFilterPlanned" text="Хочу посмотреть" />
+            <Button onAction="#handleFilterFavorites" text="Любимое" />
+        </HBox>
+    </VBox>
+
+    <!-- Панель быстрых действий -->
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button onAction="#handleShowStatistics" text="Статистика" />
+        <Button onAction="#handleClearForm"  text="Очистить форму" />
+    </HBox>
+
+</VBox>
